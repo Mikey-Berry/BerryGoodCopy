@@ -27,16 +27,17 @@
   }
 
  .redacted {
-    background: var(--red);
-    color: var(--red);
-    padding: 0.1em 0.4em;
-    border-radius: 3px;
-    cursor: default;
-    transition: color 0.3s;
-    font-weight: 700;
-}
-.redacted:hover {
-    color: rgba(255,255,255,0.15);
+   background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+   color: var(--white-pure);
+   padding: 0.15em 0.5em;
+   border-radius: 3px;
+   font-family: var(--font-mono);
+   font-size: 0.85em;
+   font-weight: 700;
+   letter-spacing: 0.05em;
+   text-transform: uppercase;
+   box-shadow: 0 2px 8px rgba(224, 32, 32, 0.3);
+   cursor: default;
 }
 
   html { scroll-behavior: smooth; }
@@ -588,8 +589,8 @@
     background: var(--red);
   }
  .about-photo-avatar {
-    width: 150px;
-    height: 150px;
+    width: 180px;
+    height: 180px;
     border-radius: 50%;
     object-fit: cover;
     border: 3px solid var(--red);
@@ -1127,18 +1128,18 @@
 <!-- LEARN -->
 <section class="learn-section" id="learn">
   <div class="learn-inner">
-    <div class="section-label">// INSIDE THE NEWSLETTER</div>
+    <div class="section-label">// INSIDE THE EMAIL COURSE</div>
     <h2>What you'll actually <em>learn</em></h2>
-    <p class="learn-sub">Each live email drops insights you won't find rehashed on LinkedIn or packaged in some $997 course.</p>
+    <p class="learn-sub">Each email drips out insights you won't find rehashed on LinkedIn or packaged in some $997 course.</p>
     <div class="learn-grid">
       <div class="learn-card anim-in">
         <div class="learn-num">[ 01 ]</div>
-        <h4>Narrative Weaponry</h4>
+        <h4>"Narrative Weaponry"</h4>
         <p>The same storytelling mechanics top agencies use to command premium rates — broken down so you can apply them immediately.</p>
       </div>
       <div class="learn-card anim-in">
         <div class="learn-num">[ 02 ]</div>
-        <h4>Monetize your fiction skills</h4>
+        <h4>Monetize your storytelling</h4>
         <p>Your character arcs, world-building, and literary frameworks are exactly what brands pay big bucks for. All you need to know is how to "break in."</p>
       </div>
       <div class="learn-card anim-in">
@@ -1183,7 +1184,7 @@
     </div>
     <div class="testi-card">
       <div class="quote-mark">"</div>
-      <blockquote>"You have some great tips! I used to think ghostwriting was mostly for books and long-form work. Never imagined <span class="redacted">[REDACTED]</span> could be such a high-value niche."</blockquote>
+      <blockquote>"You have some great tips! I used to think ghostwriting was mostly for books and long-form work. Never imagined <span class="redacted">REDACTED</span> could be such a high-value niche."</blockquote>
       <div class="testi-author">
         <div class="testi-avatar">J</div>
         <div>
