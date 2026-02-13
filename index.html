@@ -935,6 +935,75 @@
     margin-top: 0.6rem;
   }
 
+/* ── KIT INLINE FORM OVERRIDES ── */
+  .cta-section .formkit-form {
+    max-width: 480px;
+    margin: 1.8rem auto 0;
+  }
+  .cta-section .formkit-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .cta-section .formkit-input {
+    width: 100% !important;
+    padding: 14px 18px !important;
+    font-family: var(--font-display) !important;
+    font-size: 0.92rem !important;
+    color: var(--white) !important;
+    background: var(--black-soft) !important;
+    border: 1px solid var(--grey-dark) !important;
+    border-radius: 6px !important;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
+  }
+  .cta-section .formkit-input::placeholder {
+    color: var(--grey) !important;
+    font-style: normal !important;
+  }
+  .cta-section .formkit-input:focus {
+    border-color: var(--red) !important;
+    box-shadow: 0 0 0 3px var(--red-glow) !important;
+    outline: none !important;
+  }
+  .cta-section .formkit-submit {
+    width: 100% !important;
+    padding: 16px 32px !important;
+    font-family: var(--font-display) !important;
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.03em !important;
+    text-transform: uppercase !important;
+    color: var(--white-pure) !important;
+    background: var(--red) !important;
+    border: 2px solid var(--red) !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    transition: all 0.25s ease !important;
+    box-shadow: 0 4px 20px rgba(224,32,32,0.25) !important;
+    margin-top: 4px !important;
+  }
+  .cta-section .formkit-submit:hover {
+    background: var(--red-dark) !important;
+    border-color: var(--red-dark) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 30px rgba(224,32,32,0.35) !important;
+  }
+  .cta-section .formkit-guarantee,
+  .cta-section .formkit-powered-by-kit {
+    font-family: var(--font-display) !important;
+    font-size: 0.75rem !important;
+    color: var(--grey-mid) !important;
+    text-align: center !important;
+    margin-top: 12px !important;
+  }
+  .cta-section .formkit-powered-by-kit {
+    opacity: 0.25 !important;
+  }
+  .cta-section .formkit-header,
+  .cta-section .formkit-subheader {
+    display: none !important;
+  }
+ 
   /* ── MOBILE ── */
   .mobile-toggle {
     display: none;
@@ -1204,11 +1273,7 @@
   <div class="cta-inner anim-in">
     <h2>Ready to turn your writing into a <em>real moneymaker?</em></h2>
     <p>Join 500+ writers already getting world-class copywriting secrets delivered live to their inbox. Get the frameworks that separate <em>premium writers</em> from the rest.</p>
-    <a href="javascript:void(0)" class="btn-cta-big" onclick="document.querySelector('[data-uid=7657eea6c4]').click()">
-      Start the free course
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </a>
-<script async data-uid="7657eea6c4" src="https://berrygoodcopy.kit.com/7657eea6c4/index.js"></script>
+    <script async data-uid="0e66909018" src="https://berrygoodcopy.kit.com/0e66909018/index.js"></script>
     <p class="cta-note">NO SPAM · ZERO AI · UNSUBSCRIBE ANYTIME</p>
   </div>
 </section>
@@ -1220,7 +1285,7 @@
     <span>Berry Good Copy</span>
   </div>
   <p>© 2025 Berry Creative Copywriting · All Rights Reserved</p>
-  <p class="footer-tagline">Made with narrative psychology and dangerous amounts of caffeine </p>
+  <p class="footer-tagline">Made with narrative psychology and copious amounts of caffeine </p>
 </footer>
 
 <script>
