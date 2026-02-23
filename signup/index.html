@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signup Success — Berry Good Copy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    /* ══════════════════════════════════════
+       BERRY GOOD COPY — THANK YOU PAGE
+       Black/red spy aesthetic
+       ══════════════════════════════════════ */
+
+    :root {
+      --bg-primary: #0d0d0d;
+      --bg-card: #111111;
+      --red: #ff2d2d;
+      --red-dark: #cc0000;
+      --red-glow: rgba(255, 45, 45, 0.3);
+      --text-primary: #e8e4df;
+      --text-muted: #c4bfb8;
+      --text-dim: #777;
+      --mono: 'Share Tech Mono', monospace;
+      --heading: 'Bebas Neue', 'Impact', sans-serif;
+      --body: 'Libre Baskerville', Georgia, serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--body);
+      font-size: 17px;
+      line-height: 1.75;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      background:
+        radial-gradient(ellipse at 20% 0%, rgba(255,45,45,0.04) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 100%, rgba(255,45,45,0.03) 0%, transparent 60%),
+        var(--bg-primary);
+    }
+
+    /* ── SCANLINE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.08) 2px,
+        rgba(0,0,0,0.08) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    .page-wrapper {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+    }
+
+    /* ══════════════════════════════════════
+       SECTION 1: THE BAIT — "Signup Success"
+       ══════════════════════════════════════ */
+
+    .success-section {
+      text-align: center;
+      padding-bottom: 40px;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .success-heading {
+      font-family: var(--heading);
+      font-size: clamp(52px, 10vw, 80px);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #ffffff;
+      line-height: 0.95;
+      margin-bottom: 16px;
+    }
+
+    .success-sub {
+      font-family: var(--body);
+      font-size: 20px;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    .success-sub .arrow {
+      display: inline-block;
+      animation: bounce-down 1.2s ease-in-out infinite;
+      margin-left: 4px;
+    }
+
+    /* ══════════════════════════════════════
+       THE BREAK — Glitch / Corruption
+       ══════════════════════════════════════ */
+
+    .glitch-break {
+      position: relative;
+      margin: 30px 0 10px;
+      padding: 20px 0;
+      text-align: center;
+      overflow: hidden;
+      animation: glitchReveal 0.15s ease-out 1.8s both;
+    }
+
+    .glitch-line {
+      display: block;
+      height: 2px;
+      background: var(--red);
+      margin: 0 auto;
+      animation: glitchExpand 0.3s ease-out 2s both;
+      box-shadow: 0 0 20px var(--red-glow), 0 0 60px rgba(255,45,45,0.1);
+    }
+
+    .glitch-static {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        rgba(255, 45, 45, 0.03) 1px,
+        transparent 2px
+      );
+      animation: staticFlicker 0.1s steps(3) infinite;
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    .glitch-break:hover .glitch-static {
+      opacity: 1;
+    }
+
+    /* ══════════════════════════════════════
+       SECTION 2: SYSTEM ERROR
+       ══════════════════════════════════════ */
+
+    .error-section {
+      text-align: center;
+      padding: 30px 0 20px;
+      animation: glitchFadeIn 0.2s ease-out 2.2s both;
+    }
+
+    .bzzt {
+      font-family: var(--mono);
+      font-size: clamp(36px, 7vw, 56px);
+      color: var(--red);
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      text-shadow:
+        0 0 10px var(--red-glow),
+        0 0 40px rgba(255,45,45,0.15),
+        2px 0 0 rgba(255,45,45,0.4),
+        -2px 0 0 rgba(0,255,255,0.2);
+      animation: bzztGlitch 3s ease-in-out infinite;
+      margin-bottom: 20px;
+    }
+
+    .error-block {
+      font-family: var(--mono);
+      font-size: 14px;
+      line-height: 2.2;
+      color: var(--red);
+      opacity: 0.85;
+      letter-spacing: 1px;
+    }
+
+    .error-block .bracket {
+      color: var(--text-dim);
+    }
+
+    .error-block .label {
+      color: var(--red);
+      text-transform: uppercase;
+    }
+
+    /* ══════════════════════════════════════
+       SECTION 3: PHASE TRANSITION
+       ══════════════════════════════════════ */
+
+    .phase-section {
+      text-align: center;
+      padding: 30px 0 20px;
+      animation: fadeIn 0.8s ease-out 2.8s both;
+    }
+
+    .phase-line {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--text-dim);
+      letter-spacing: 2px;
+      line-height: 2.4;
+      opacity: 0.7;
+    }
+
+    .phase-line .highlight {
+      color: var(--text-primary);
+    }
+
+    /* Thin separator */
+    .thin-rule {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--text-dim), transparent);
+      margin: 30px auto;
+      opacity: 0.4;
+    }
+
+    /* ══════════════════════════════════════
+       SECTION 4: THE LETTER — Mikey's Message
+       ══════════════════════════════════════ */
+
+    .letter-section {
+      padding: 10px 0 40px;
+      animation: fadeIn 1s ease-out 3.4s both;
+    }
+
+    .letter-section p {
+      margin-bottom: 1.4em;
+      color: var(--text-muted);
+      font-size: 17px;
+    }
+
+    .letter-section .greeting {
+      font-size: 22px;
+      color: var(--text-primary);
+      margin-bottom: 0.6em;
+    }
+
+    .letter-section .name-intro {
+      font-size: 17px;
+      color: var(--text-primary);
+      font-weight: 700;
+    }
+
+    .letter-section .bold-line {
+      font-size: clamp(20px, 4vw, 26px);
+      font-family: var(--heading);
+      color: #ffffff;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      line-height: 1.3;
+      margin: 1.2em 0;
+      padding: 18px 24px;
+      border-left: 3px solid var(--red);
+      background: linear-gradient(90deg, rgba(255,45,45,0.06), transparent);
+    }
+
+    .letter-section .consequences {
+      color: var(--text-dim);
+      font-style: italic;
+      font-size: 15px;
+      padding-left: 20px;
+      border-left: 1px solid rgba(255,45,45,0.2);
+      margin: 1.4em 0;
+    }
+
+    .letter-section .parenthetical {
+      color: var(--text-dim);
+      font-style: italic;
+      font-size: 15px;
+    }
+
+    .letter-section .emphasis {
+      color: var(--text-primary);
+      font-weight: 700;
+    }
+
+    .letter-section .signoff {
+      margin-top: 2em;
+      color: var(--text-primary);
+    }
+
+    /* ══════════════════════════════════════
+       SECTION 5: CLOSING SYSTEM STATUS
+       ══════════════════════════════════════ */
+
+    .closing-system {
+      text-align: center;
+      padding: 20px 0 40px;
+      animation: fadeIn 0.8s ease-out 4s both;
+    }
+
+    .closing-system .phase-line {
+      font-size: 12px;
+    }
+
+    .timer-value {
+      color: var(--red);
+      font-weight: 700;
+      font-size: 15px;
+      text-shadow: 0 0 8px var(--red-glow);
+    }
+
+    /* ══════════════════════════════════════
+       ALERT INTERRUPTIONS (inline)
+       ══════════════════════════════════════ */
+
+    .alert-interrupt {
+      text-align: center;
+      margin: 2em 0;
+      padding: 16px 0;
+    }
+
+    .alert-interrupt .phase-line {
+      color: var(--red);
+      opacity: 0.6;
+      font-size: 12px;
+      animation: alertPulse 2.5s ease-in-out infinite;
+    }
+
+    /* ══════════════════════════════════════
+       ANIMATIONS
+       ══════════════════════════════════════ */
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes glitchReveal {
+      0% { opacity: 0; }
+      50% { opacity: 1; }
+      70% { opacity: 0.3; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes glitchExpand {
+      0% { width: 0; }
+      60% { width: 110%; }
+      80% { width: 85%; }
+      100% { width: 100%; }
+    }
+
+    @keyframes glitchFadeIn {
+      0% { opacity: 0; transform: translateX(-5px); }
+      30% { opacity: 0.8; transform: translateX(3px); }
+      60% { opacity: 0.4; transform: translateX(-2px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes bzztGlitch {
+      0%, 95%, 100% { text-shadow: 0 0 10px var(--red-glow), 2px 0 0 rgba(255,45,45,0.4), -2px 0 0 rgba(0,255,255,0.2); transform: translate(0); }
+      96% { text-shadow: -3px 0 var(--red), 3px 0 cyan; transform: translate(2px, -1px); }
+      97% { text-shadow: 3px 0 var(--red), -3px 0 cyan; transform: translate(-2px, 1px); }
+      98% { text-shadow: -1px 2px var(--red), 1px -2px cyan; transform: translate(1px, 2px); }
+    }
+
+    @keyframes staticFlicker {
+      0% { opacity: 0.3; }
+      50% { opacity: 0.6; }
+      100% { opacity: 0.2; }
+    }
+
+    @keyframes bounce-down {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(6px); }
+    }
+
+    @keyframes alertPulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.8; }
+    }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE
+       ══════════════════════════════════════ */
+
+    @media (max-width: 480px) {
+      .page-wrapper {
+        padding: 40px 18px 60px;
+      }
+      .letter-section p {
+        font-size: 16px;
+      }
+      .letter-section .bold-line {
+        padding: 14px 18px;
+      }
+      .error-block {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <!-- ═══ SECTION 1: THE BAIT ═══ -->
+  <section class="success-section">
+    <h1 class="success-heading">Signup Success!</h1>
+    <p class="success-sub">Click Below For —<span class="arrow">↓</span></p>
+  </section>
+
+  <!-- ═══ THE BREAK ═══ -->
+  <div class="glitch-break">
+    <div class="glitch-static"></div>
+    <span class="glitch-line"></span>
+  </div>
+
+  <!-- ═══ SECTION 2: SYSTEM ERROR ═══ -->
+  <section class="error-section">
+    <div class="bzzt">BZZZZT</div>
+    <div class="error-block">
+      <span class="bracket">[</span><span class="label">Error.</span><span class="bracket">]</span><br>
+      Agency metafilters <span class="label">FAILING</span>.<br>
+      Reality breach imminent.
+    </div>
+  </section>
+
+  <!-- ═══ SECTION 3: PHASE TRANSITION ═══ -->
+  <section class="phase-section">
+    <div class="phase-line">
+      <span class="bracket">[</span>Narrative overwrite <span class="highlight">engaged</span>.<span class="bracket">]</span><br>
+      <span class="bracket">[</span>Execute <span class="highlight">Phase I</span>.<span class="bracket">]</span>
+    </div>
+  </section>
+
+  <div class="thin-rule"></div>
+
+  <!-- ═══ SECTION 4: MIKEY'S LETTER ═══ -->
+  <section class="letter-section">
+    <p class="greeting">Hey.</p>
+    <p class="name-intro">Mikey Berry here again.</p>
+
+    <p>Oh, boy. You've gone and done it now, huh?</p>
+
+    <p>The Agency—they tracked you here.</p>
+
+    <p>Listen. We don't have much time. I've just sent a confirmation email that'll give you access to the email course...</p>
+
+    <p>But there's a catch.</p>
+
+    <div class="bold-line">You have less than 24 hours to confirm your subscription.</div>
+
+    <p>Otherwise, that link expires. And if the link expires without your opt&nbsp;in…</p>
+
+    <p class="consequences">You'll be permanently blacklisted from signing up.</p>
+
+    <p class="parenthetical">(Nothing personal. Just can't have any spies sneaking through my defenses...)</p>
+
+    <!-- ALERT INTERRUPTION -->
+    <div class="alert-interrupt">
+      <div class="phase-line">
+        <span class="bracket">[</span>ALERT: Reality breach <span class="highlight">intensifying</span>.<span class="bracket">]</span><br>
+        <span class="bracket">[</span>4th-wall merger <span class="highlight">failing</span>.<span class="bracket">]</span>
+      </div>
+    </div>
+
+    <p>Well, that's all the time I have to explain.</p>
+
+    <p>So are you in? Or not?</p>
+
+    <p>Frankly, I only want you on my list if <span class="emphasis">YOU</span> genuinely want to be there.</p>
+
+    <p>So if that <span class="emphasis">IS</span> what you want… Then I suggest you head over to your inbox and opt&nbsp;in. Before it's too late.</p>
+
+    <p class="signoff">See you there.</p>
+  </section>
+
+  <!-- ═══ SECTION 5: CLOSING SYSTEM STATUS ═══ -->
+  <section class="closing-system">
+    <div class="phase-line">
+      <span class="bracket">[</span>Reality stabilization <span class="highlight">initiated</span>.<span class="bracket">]</span><br>
+      <span class="bracket">[</span>Agency metafilters engaged for approximately ... <span class="timer-value">&lt;23.9&gt;</span> hours.<span class="bracket">]</span>
+    </div>
+  </section>
+
+</div>
+
+</body>
+</html>
