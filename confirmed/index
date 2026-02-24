@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>You're In — Berry Good Copy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d0d0d;
+      --bg-card: #131313;
+      --bg-surface: #181818;
+      --red: #ff2d2d;
+      --red-dark: #cc0000;
+      --red-soft: rgba(255, 45, 45, 0.08);
+      --red-glow: rgba(255, 45, 45, 0.25);
+      --green: #2dcc6f;
+      --green-soft: rgba(45, 204, 111, 0.1);
+      --green-glow: rgba(45, 204, 111, 0.25);
+      --text: #ddd8d2;
+      --text-muted: #888;
+      --text-dim: #555;
+      --border: rgba(255,255,255,0.06);
+      --mono: 'Share Tech Mono', monospace;
+      --heading: 'Bebas Neue', 'Impact', sans-serif;
+      --body: 'Libre Baskerville', Georgia, serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--body);
+      font-size: 17px;
+      line-height: 1.75;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      background:
+        radial-gradient(ellipse at 30% 10%, rgba(45, 204, 111, 0.03) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 90%, rgba(255, 45, 45, 0.03) 0%, transparent 50%),
+        var(--bg);
+    }
+
+    /* ── SCANLINES (subtle) ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(255,255,255,0.008) 2px,
+        rgba(255,255,255,0.008) 3px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── CONTAINER ── */
+    .page {
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 5rem 2rem 4rem;
+    }
+
+    /* ── STATUS HEADER ── */
+    .status-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--green);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      animation: fadeIn 0.8s ease both;
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green-glow);
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--green-glow); }
+      50% { opacity: 0.6; box-shadow: 0 0 16px var(--green-glow); }
+    }
+
+    /* ── HEADING ── */
+    .main-heading {
+      font-family: var(--heading);
+      font-size: clamp(3rem, 8vw, 4.5rem);
+      line-height: 0.95;
+      letter-spacing: 0.02em;
+      color: #fff;
+      margin-bottom: 0.5rem;
+      animation: fadeInUp 0.6s 0.1s ease both;
+    }
+    .main-heading em {
+      color: var(--green);
+      font-style: normal;
+    }
+    .sub-heading {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      margin-bottom: 2.5rem;
+      animation: fadeInUp 0.6s 0.2s ease both;
+    }
+
+    /* ── BODY COPY ── */
+    .body-text {
+      animation: fadeInUp 0.6s 0.3s ease both;
+    }
+    .body-text p {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--text);
+      margin-bottom: 1.2rem;
+    }
+    .body-text p strong {
+      color: #fff;
+      font-weight: 700;
+    }
+    .body-text p em {
+      color: var(--red);
+      font-style: italic;
+    }
+
+    /* ── RATE CARD DOWNLOAD BOX ── */
+    .download-box {
+      margin: 2.5rem 0;
+      padding: 2rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--red);
+      border-radius: 6px;
+      animation: fadeInUp 0.6s 0.4s ease both;
+      position: relative;
+      overflow: hidden;
+    }
+    .download-box::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle at top right, var(--red-soft), transparent 70%);
+      pointer-events: none;
+    }
+    .download-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--red);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.6rem;
+    }
+    .download-title {
+      font-family: var(--heading);
+      font-size: 1.8rem;
+      color: #fff;
+      letter-spacing: 0.02em;
+      margin-bottom: 0.3rem;
+    }
+    .download-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 1.3rem;
+      line-height: 1.6;
+    }
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--red);
+      color: #fff;
+      text-decoration: none;
+      padding: 0.75rem 1.6rem;
+      border-radius: 4px;
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: all 0.25s ease;
+      position: relative;
+      z-index: 1;
+    }
+    .download-btn:hover {
+      background: var(--red-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px var(--red-glow);
+    }
+    .download-btn svg {
+      transition: transform 0.2s;
+    }
+    .download-btn:hover svg {
+      transform: translateY(2px);
+    }
+
+    /* ── WHAT HAPPENS NEXT ── */
+    .next-section {
+      margin-top: 3rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid var(--border);
+      animation: fadeInUp 0.6s 0.5s ease both;
+    }
+    .next-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--red);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+    }
+    .next-heading {
+      font-family: var(--heading);
+      font-size: 1.6rem;
+      color: #fff;
+      letter-spacing: 0.02em;
+      margin-bottom: 1.2rem;
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 8px;
+      bottom: 8px;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--red), var(--border));
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 1.8rem;
+    }
+    .timeline-item:last-child { margin-bottom: 0; }
+    .timeline-dot {
+      position: absolute;
+      left: -2rem;
+      top: 6px;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      border: 2px solid var(--red);
+      background: var(--bg);
+    }
+    .timeline-item:first-child .timeline-dot {
+      background: var(--red);
+      box-shadow: 0 0 8px var(--red-glow);
+    }
+    .timeline-when {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.2rem;
+    }
+    .timeline-what {
+      font-size: 0.92rem;
+      color: var(--text);
+      line-height: 1.65;
+    }
+    .timeline-what strong {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    /* ── SIGN-OFF ── */
+    .signoff {
+      margin-top: 3rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid var(--border);
+      animation: fadeInUp 0.6s 0.6s ease both;
+    }
+    .signoff p {
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+    .signoff-name {
+      font-family: var(--heading);
+      font-size: 1.4rem;
+      color: #fff;
+      letter-spacing: 0.02em;
+    }
+    .signoff-title {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── FOOTER ── */
+    .page-footer {
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      letter-spacing: 0.03em;
+      animation: fadeIn 0.8s 0.7s ease both;
+    }
+    .page-footer a {
+      color: var(--red);
+      text-decoration: none;
+    }
+    .page-footer a:hover { text-decoration: underline; }
+    .footer-tagline {
+      margin-top: 0.5rem;
+      color: var(--red);
+      opacity: 0.5;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 600px) {
+      .page { padding: 4rem 1.5rem 3rem; }
+      .main-heading { font-size: 2.8rem; }
+      .download-box { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- STATUS -->
+  <div class="status-bar">
+    <div class="status-dot"></div>
+    Subscription confirmed · Secure channel established
+  </div>
+
+  <!-- HEADING -->
+  <h1 class="main-heading">YOU'RE <em>IN.</em></h1>
+  <p class="sub-heading">Identity verified. Welcome to the inside.</p>
+
+  <!-- BODY -->
+  <div class="body-text">
+    <p>Hey, the Agency's metafilters didn't catch you. Good.</p>
+    <p>You just joined a small (but growing) group of writers who are done playing by everyone else's rules. <strong>That took guts.</strong> Most people click away. You didn't.</p>
+    <p>Here's how we're gonna run it.</p>
+  </div>
+
+  <!-- WHAT HAPPENS NEXT -->
+  <div class="next-section">
+    <div class="next-label">// What happens next</div>
+    <h2 class="next-heading">YOUR FIRST BRIEFING IS EN ROUTE</h2>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-when">Within minutes</div>
+        <div class="timeline-what"><strong>Lesson 1 hits your inbox.</strong> It's about a CEO whose writing style nearly broke me -- and the technique I used to crack it. This is where you learn the skill that separates $50/post writers from $200+/post writers.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-when">Over the next 7 days</div>
+        <div class="timeline-what"><strong>3 more lessons follow.</strong> AI-proofing your career, a Japanese client acquisition strategy, and the mindset framework that ties it all together. Each one builds on the last.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-when">After the course</div>
+        <div class="timeline-what"><strong>You'll get my usual emails.</strong> Stay on the bleeding edge of the copywriting world -- strategies, tactics, and tools, oh my! -- all from an agency insider's lens.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIGN-OFF -->
+  <div class="signoff">
+    <p>One last thing — if the emails don't show up, check your spam or promotions folder. Drag the first one to your primary inbox and you'll never miss a briefing.</p>
+    <p>Welcome aboard. Let's get you paid what you're worth.</p>
+    <div class="signoff-name">— MIKEY</div>
+    <div class="signoff-title">Berry Good Copy · berrygoodcopy.com</div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="page-footer">
+    <p>© 2025 Berry Creative Copywriting · <a href="/">Back to berrygoodcopy.com</a></p>
+    <p class="footer-tagline">100% human-written. Zero AI. Always.</p>
+  </div>
+
+</div>
+
+</body>
+</html>
