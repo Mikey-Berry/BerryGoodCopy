@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Join the Newsletter — Berry Good Copy</title>
+<meta name="description" content="Join 1000+ writers already getting world-class copywriting secrets delivered live to their inbox.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;800;900&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #E02020;
+    --red-dark: #B01818;
+    --red-glow: rgba(224, 32, 32, 0.15);
+    --black: #0A0A0A;
+    --black-card: #111111;
+    --black-soft: #1A1A1A;
+    --grey-dark: #2A2A2A;
+    --grey-mid: #3A3A3A;
+    --grey: #888888;
+    --grey-light: #B0B0B0;
+    --white: #F5F5F5;
+    --white-pure: #FFFFFF;
+    --font-display: 'Outfit', system-ui, sans-serif;
+    --font-mono: 'Space Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    font-family: var(--font-display);
+    background: var(--black-soft);
+    color: var(--white);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── MANGA HALFTONE & SPEED LINE TEXTURES ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 4px 4px;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── FINAL CTA ── */
+  .cta-section {
+    padding: 6rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    background: var(--black-soft);
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* dramatic speed lines */
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        -35deg,
+        transparent,
+        transparent 4px,
+        rgba(224, 32, 32, 0.02) 4px,
+        rgba(224, 32, 32, 0.02) 5px
+      );
+  }
+  .cta-section::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(224, 32, 32, 0.08), transparent 70%);
+  }
+  .cta-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .cta-section h2 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 900;
+    color: var(--white-pure);
+    line-height: 1.15;
+    margin-bottom: 1rem;
+    letter-spacing: -0.03em;
+  }
+  .cta-section h2 em { color: var(--red); font-style: normal; }
+  .cta-section p {
+    font-size: 1.02rem;
+    color: var(--grey-light);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  /* ── INLINE SIGNUP FORM (Kit embed inherits) ── */
+  .cta-note {
+    font-size: 0.75rem;
+    color: var(--grey);
+    margin-top: 1.2rem;
+    font-family: var(--font-mono);
+    letter-spacing: 0.03em;
+  }
+
+  /* Entrance animation */
+  .anim-in {
+    animation: riseUp 0.7s ease-out;
+  }
+  @keyframes riseUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Mobile */
+  @media (max-width: 540px) {
+    .cta-section { padding: 4rem 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-inner anim-in">
+    <h2>Ready to turn your writing into a <em>real moneymaker?</em></h2>
+    <p>Join 1000+ writers already getting world-class copywriting secrets delivered live to their inbox. Get the frameworks that separate <em>premium writers</em> from the rest.</p>
+    <script async data-uid="dcaa04eb9d" src="https://berrygoodcopy.kit.com/dcaa04eb9d/index.js"></script>
+    <p class="cta-note">No spam · Zero AI · Unsubscribe anytime</p>
+  </div>
+</section>
+
+</body>
+</html>
