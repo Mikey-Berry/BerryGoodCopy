@@ -20,9 +20,9 @@
 const crypto = require('crypto');
 
 const KIT_BASE = 'https://api.kit.com/v4';
-const API_KEY  = process.env.KIT_API_KEY;
-const FORM_ID  = process.env.KIT_FORM_ID;
-const TAG_NAME = process.env.KIT_TAG || 'Intercept: Full Access';
+const API_KEY  = (process.env.KIT_API_KEY || '').trim();
+const FORM_ID  = (process.env.KIT_FORM_ID || '').trim();
+const TAG_NAME = (process.env.KIT_TAG || 'Intercept: Full Access').trim();
 const SECRET   = process.env.TOKEN_SECRET || 'change-me-in-netlify';
 
 const CORS = {
@@ -101,12 +101,24 @@ exports.handler = async (event) => {
       }
       // New / unconfirmed -> add through the form (this is what fires Kit's
       // confirmation/incentive email for a double opt-in form).
+      log('using KIT_FORM_ID =', JSON.stringify(FORM_ID));
       const r = await kit('/forms/' + FORM_ID + '/subscribers', { method: 'POST', body: JSON.stringify({ email_address: email }) });
       const txt = await r.text();
       log('form POST -> status', r.status, '| body', txt.slice(0, 600));
       if (!r.ok) {
-        // Don't pretend it worked. Surface it so the app shows an error instead
-        // of telling the user to check an inbox that will never get an email.
+        // 404 here almost always means KIT_FORM_ID doesn't match a form in THIS
+        // account. List the real forms so the correct id <-> name is visible.
+        let forms = '(could not list)';
+        try {
+          const fr = await kit('/forms');
+          if (fr.ok) {
+            const fd = await fr.json().catch(() => ({}));
+            forms = (fd.forms || []).map(f => f.id + ' = "' + f.name + '"').join('   |   ') || '(account has no forms)';
+          } else {
+            forms = 'forms-list call returned status ' + fr.status + ' (if 401, the API key is the problem)';
+          }
+        } catch (e) { forms = 'forms-list error ' + String((e && e.message) || e); }
+        log('>>> AVAILABLE FORMS in this account:', forms);
         return reply(502, { error: 'Kit rejected the sign-up', status: r.status, detail: txt.slice(0, 300) });
       }
       let data = {};
