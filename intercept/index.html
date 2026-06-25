@@ -2,8 +2,16 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>THE INTERCEPT // CLASSIFIED FEED</title>
+<meta name="description" content="Field-tested copywriting intel, one transmission at a time. By Berry Good Copy.">
+<meta name="theme-color" content="#0A0A0A">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Intercept">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&display=swap');
 
@@ -37,37 +45,84 @@ body::after{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
 .chip.scramble{border-color:var(--red);color:var(--red);font-weight:700;}
 .chip.scramble.locked{border-color:var(--line);color:var(--mute);font-weight:400;}
 
-/* ONE TRANSMISSION PER SCREEN — social-style snap feed */
-.feed{height:100%;overflow-y:scroll;scroll-snap-type:y mandatory;padding-top:124px;scrollbar-width:none;}
+/* CONTINUOUS FEED — social-style scroll with inline expand */
+.feed{height:100%;overflow-y:scroll;padding-top:124px;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
 .feed::-webkit-scrollbar{display:none;}
 
-.card{scroll-snap-align:start;min-height:calc(100vh - 124px);display:flex;flex-direction:column;justify-content:center;padding:24px 18px 86px;border-bottom:1px solid var(--line);position:relative;opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease;}
-.card.seen{opacity:1;transform:none;}
+.card{border-bottom:1px solid var(--line);padding:20px 16px;}
 
-.panel{background:linear-gradient(155deg,var(--panel),var(--panel-2));border:1px solid var(--line);border-left:3px solid var(--red);padding:26px 22px 22px;position:relative;box-shadow:0 24px 60px rgba(0,0,0,.55);cursor:pointer;transition:transform .15s;}
-.panel:active{transform:scale(.99);}
+.panel{background:linear-gradient(155deg,var(--panel),var(--panel-2));border:1px solid var(--line);border-left:3px solid var(--red);padding:24px 20px 20px;position:relative;box-shadow:0 16px 40px rgba(0,0,0,.4);}
 .panel::before{content:"";position:absolute;top:-1px;right:-1px;width:13px;height:13px;border:1px solid var(--mute);border-left:none;border-bottom:none;opacity:.45;}
 
-.c-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+.c-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
 .tag{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--red);border:1px solid var(--red);padding:4px 9px;font-weight:700;text-transform:uppercase;}
 .c-num{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1.3px;color:var(--mute);}
 
-.principle{font-family:'Bebas Neue',sans-serif;font-size:clamp(38px,10vw,52px);line-height:.98;letter-spacing:.5px;margin-bottom:16px;}
+.principle{font-family:'Bebas Neue',sans-serif;font-size:clamp(33px,8.4vw,46px);line-height:1.0;letter-spacing:.5px;margin-bottom:13px;}
 .principle .hl{color:var(--red);}
-.c-hook{font-size:18px;line-height:1.55;color:#d2d2d2;font-style:italic;margin-bottom:22px;}
+.c-hook{font-size:16.5px;line-height:1.55;color:#d2d2d2;font-style:italic;margin-bottom:18px;}
 
-.c-foot{display:flex;justify-content:space-between;align-items:center;border-top:1px dashed var(--line);padding-top:15px;}
-.c-src{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--mute);text-transform:uppercase;}
-.c-foot .right{display:flex;align-items:center;gap:16px;}
-.decrypt{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--red);text-transform:uppercase;display:flex;align-items:center;gap:6px;font-weight:700;}
-.decrypt svg{width:13px;height:13px;stroke:var(--red);fill:none;stroke-width:2;}
+.c-foot{display:flex;justify-content:space-between;align-items:center;border-top:1px dashed var(--line);padding-top:14px;gap:12px;}
+.c-src{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--mute);text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.c-foot .right{display:flex;align-items:center;gap:15px;flex:0 0 auto;}
+.decode-btn{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--red);text-transform:uppercase;display:flex;align-items:center;gap:6px;font-weight:700;background:none;border:none;cursor:pointer;padding:0;}
+.decode-btn svg{width:14px;height:14px;stroke:var(--red);fill:none;stroke-width:2.4;transition:transform .3s ease;}
+.card.open .decode-btn svg{transform:rotate(180deg);}
 .savebtn{cursor:pointer;padding:5px;display:flex;}
+.iconbtn{cursor:pointer;padding:5px;display:flex;background:none;border:none;}
+.iconbtn svg{width:19px;height:19px;stroke:var(--mute);fill:none;stroke-width:1.7;transition:.15s;}
+.iconbtn:active{transform:scale(.85);}
+.iconbtn:active svg{stroke:var(--red);}
+.shared-banner{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1.4px;color:var(--red);text-transform:uppercase;border:1px dashed var(--red);padding:12px 14px;text-align:center;}
 .savebtn svg{width:21px;height:21px;stroke:var(--mute);fill:none;stroke-width:1.6;transition:.15s;}
 .savebtn.filed svg{stroke:var(--red);fill:var(--red);}
 .savebtn:active{transform:scale(.85);}
 
-.swipe-hint{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--mute);text-transform:uppercase;animation:bob 1.8s infinite;opacity:.6;}
-@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+/* inline expand: grid 0fr->1fr animates height smoothly */
+.card-full{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s ease;}
+.card.open .card-full{grid-template-rows:1fr;}
+.card-full-inner{overflow:hidden;min-height:0;}
+.card-full-pad{margin-top:16px;padding-top:22px;border-top:1px dashed var(--line);color:var(--ink);}
+.ex-mech{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1.3px;text-transform:uppercase;color:var(--red);border:1px solid var(--red);display:inline-block;padding:5px 10px;margin-bottom:22px;}
+
+/* intro / "what is this" card */
+.brief-card{border:2px solid var(--red);background:linear-gradient(165deg,#1b1212,#0e0e0e);box-shadow:0 18px 44px rgba(0,0,0,.5);}
+.brief-head{background:var(--red);color:var(--black);font-family:'Space Mono',monospace;font-size:10.5px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;padding:9px 15px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.brief-body{padding:22px 20px 20px;}
+.brief-body h3{font-family:'Bebas Neue',sans-serif;font-size:34px;line-height:1.0;letter-spacing:.5px;margin-bottom:12px;}
+.brief-body h3 .hl{color:var(--red);}
+.brief-lead{font-size:14.5px;line-height:1.6;color:#cfcfcf;margin-bottom:20px;}
+.brief-lead em{color:#fff;font-style:italic;}
+.howto{border-top:1px dashed var(--line);padding-top:18px;}
+.howto-title{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1.8px;color:var(--mute);text-transform:uppercase;margin-bottom:14px;}
+.howto-row{display:flex;gap:13px;align-items:center;margin-bottom:13px;}
+.howto-ic{flex:0 0 auto;width:32px;height:32px;border:1px solid var(--red);display:flex;align-items:center;justify-content:center;}
+.howto-ic svg{width:16px;height:16px;stroke:var(--red);fill:none;stroke-width:1.9;}
+.howto-tx{font-size:13.5px;line-height:1.45;color:#d2d2d2;}
+.howto-tx strong{color:var(--ink);}
+.brief-install{margin-top:6px;border:1px solid var(--line);background:rgba(224,32,32,.06);padding:14px;font-size:13px;line-height:1.55;color:#d2d2d2;}
+.brief-install strong{color:var(--red);}
+.brief-foot{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:1.3px;color:var(--mute);text-transform:uppercase;margin-top:18px;border-top:1px dashed var(--line);padding-top:13px;}
+
+/* inline funnel prompt cards (soft nudge + wall) */
+.feed-prompt{border:1px solid var(--red);border-left-width:3px;background:rgba(224,32,32,.05);padding:24px 20px;}
+.feed-prompt.soft{border-color:var(--line);border-left-color:var(--red);background:linear-gradient(155deg,var(--panel),var(--panel-2));}
+.feed-prompt .fp-eye{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--red);text-transform:uppercase;margin-bottom:12px;}
+.feed-prompt h3{font-family:'Bebas Neue',sans-serif;font-size:clamp(30px,8.5vw,44px);line-height:1.0;letter-spacing:.5px;margin-bottom:13px;}
+.feed-prompt h3 .hl{color:var(--red);}
+.feed-prompt p{font-size:15px;line-height:1.6;color:#d4d4d4;margin-bottom:18px;}
+.feed-prompt p .hl{color:var(--red);}
+.fp-btn{width:100%;font-family:'Space Mono',monospace;font-size:13px;letter-spacing:1.2px;text-transform:uppercase;font-weight:700;padding:15px;border:1px solid var(--red);background:var(--red);color:var(--black);cursor:pointer;transition:.15s;}
+.fp-btn.ghost{background:transparent;color:var(--red);}
+.fp-btn:active{transform:scale(.99);}
+.wall-lock{display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+.wall-lock svg{width:30px;height:30px;stroke:var(--red);fill:none;stroke-width:1.6;}
+
+/* end-of-feed states (full users) */
+.feed-progress{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:1.5px;color:var(--mute);text-transform:uppercase;text-align:center;padding:20px 0 6px;}
+.caught-up{text-align:center;padding:34px 24px 60px;border-bottom:none;}
+.caught-up .cu-stamp{font-family:'Bebas Neue',sans-serif;font-size:40px;letter-spacing:2px;color:var(--mute);border:2px solid var(--line);display:inline-block;padding:8px 18px;transform:rotate(-3deg);margin-bottom:18px;}
+.caught-up p{font-size:14.5px;line-height:1.62;color:#cfcfcf;max-width:300px;margin:0 auto;}
 
 /* DETAIL */
 .detail{position:fixed;inset:0;z-index:200;background:var(--black);display:flex;flex-direction:column;transform:translateY(100%);transition:transform .3s cubic-bezier(.2,.8,.2,1);}
@@ -134,10 +189,10 @@ body::after{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
 /* inbox button in topbar */
-.inbox-btn{background:none;border:none;cursor:pointer;padding:4px;display:flex;align-items:center;}
-.inbox-btn svg{width:20px;height:20px;stroke:var(--mute);fill:none;stroke-width:1.7;transition:.15s;}
-.inbox-btn:active{transform:scale(.88);}
-.inbox-btn:hover svg{stroke:var(--red);}
+.gear-btn{background:none;border:none;cursor:pointer;padding:4px;display:flex;align-items:center;}
+.gear-btn svg{width:21px;height:21px;stroke:var(--mute);fill:none;stroke-width:1.7;transition:.25s;}
+.gear-btn:active{transform:scale(.88);}
+.gear-btn:hover svg{stroke:var(--red);transform:rotate(40deg);}
 
 /* dossier capture banner */
 .dossier-cta{background:linear-gradient(155deg,#181818,#0d0d0d);border:1px solid var(--red);border-left:3px solid var(--red);padding:20px 18px;margin-bottom:16px;box-shadow:0 0 24px rgba(224,32,32,.12);}
@@ -174,33 +229,67 @@ body::after{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
 /* hard wall mode */
 .lead-overlay.hard{align-items:center;background:rgba(5,5,5,.94);}
 .lead-overlay.hard .lead{margin:0 14px;border:1px solid var(--red);border-top:3px solid var(--red);box-shadow:0 0 50px rgba(224,32,32,.25);}
-.lead-overlay.hard .close-x,.lead-overlay.hard .dismiss{display:none!important;}
+.lead-overlay.hard .dismiss{display:none!important;}
 
 /* dev-only reset (remove for production) */
 .dev-reset{position:fixed;bottom:14px;left:14px;z-index:350;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;background:rgba(18,18,18,.82);border:1px solid var(--line);color:#555;padding:6px 9px;cursor:pointer;}
 .dev-reset:active{transform:scale(.95);}
+.set-sheet{max-height:86vh;overflow-y:auto;scrollbar-width:none;}
+.set-sheet::-webkit-scrollbar{display:none;}
+.set-sec{border-top:1px dashed var(--line);padding-top:18px;margin-top:20px;}
+.set-sec.first{border-top:none;padding-top:0;margin-top:0;}
+.set-label{font-family:'Bebas Neue',sans-serif;font-size:23px;letter-spacing:1px;color:var(--red);margin-bottom:12px;line-height:1;}
+.set-copy{font-size:14px;line-height:1.62;color:#cdcdcd;}
+.set-copy strong{color:var(--ink);font-weight:700;}
+.set-copy a{color:var(--red);text-decoration:none;border-bottom:1px solid rgba(224,32,32,.4);}
+.set-status{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:1px;color:var(--green);display:flex;align-items:center;gap:8px;text-transform:uppercase;}
+.set-sub{font-size:13.5px;line-height:1.55;color:var(--mute);margin-bottom:13px;}
+.set-btn{width:100%;font-family:'Space Mono',monospace;font-size:13px;letter-spacing:1.2px;text-transform:uppercase;font-weight:700;padding:13px;border:1px solid var(--red);background:transparent;color:var(--red);cursor:pointer;transition:.15s;}
+.set-btn:active{transform:scale(.99);background:rgba(224,32,32,.08);}
 </style>
 </head>
 <body>
 
 <div class="topbar">
   <div class="brand"><span class="title">THE INTER<span class="x">CEPT</span></span><span class="sub">Berry Good Copy</span></div>
-  <div class="status"><button class="inbox-btn" id="inboxBtn" aria-label="Get transmissions by email"><svg viewBox="0 0 24 24"><path d="M3 5h18v14H3z"/><path d="M3 6l9 7 9-7"/></svg></button><span class="dot"></span>SIGNAL LIVE</div>
+  <div class="status"><button class="gear-btn" id="gearBtn" aria-label="Settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button></div>
 </div>
 
 <div class="filters" id="filters"></div>
 <div class="feed" id="feed"></div>
 
-<div class="detail" id="detail">
-  <div class="d-top">
-    <button class="d-back" id="dBack"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>FEED</button>
-    <span class="d-pos" id="dPos"></span>
-    <div class="d-save" id="dSave"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M9 12h6M9 16h6"/></svg></div>
-  </div>
-  <div class="d-body" id="dBody"></div>
-</div>
-
 <div class="toast" id="toast"></div>
+
+<div class="lead-overlay settings-overlay" id="settingsOverlay">
+  <div class="lead set-sheet">
+    <button class="close-x" id="setClose">&#10005;</button>
+    <div class="eyebrow"><span class="dot"></span>// CONTROL PANEL</div>
+    <h2 style="font-size:38px;margin-bottom:22px;">SETTINGS</h2>
+
+    <div class="set-sec first">
+      <div class="set-label">ACCESS</div>
+      <div id="setAccess"></div>
+    </div>
+
+    <div class="set-sec">
+      <div class="set-label">PRIVACY</div>
+      <div class="set-copy">
+        <strong>Your dossier stays on your device.</strong> The cards you file are saved in this browser only — not on any server. Clear your browser data and they're gone.<br><br>
+        <strong>Your email goes to one place.</strong> When you sign up, your address is sent to my email provider (Kit) so I can send the course and weekly transmissions. Nothing more.<br><br>
+        <strong>No tracking, no ads, no resale.</strong> The Intercept runs no third-party ad or analytics trackers, and I never sell or share your email. Unsubscribe from any email, anytime.
+      </div>
+    </div>
+
+    <div class="set-sec">
+      <div class="set-label">ABOUT</div>
+      <div class="set-copy">
+        <strong>The Intercept</strong> is a field manual disguised as a feed — 101 cards of hard-won copywriting intel, decoded from the operators who actually moved money with words and rewritten for working freelance writers.<br><br>
+        Built by Berry Good Copy: agency-insider craft, zero guru fluff, 100% human-written. File the keepers, sign up to unlock the full library, and trade the doomscroll for something that pays.<br><br>
+        <strong>More at <a href="https://berrygoodcopy.com" target="_blank" rel="noopener">berrygoodcopy.com</a>.</strong>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="lead-overlay" id="leadOverlay">
   <div class="lead">
@@ -1203,7 +1292,7 @@ const INTEL = [
   src:"FIELD MANUAL // EDITING", name:"The Greats, Collectively", org:"Hard-Won Consensus" }
 ];
 
-let filed={}, activeCat="ALL", currentList=[], currentIdx=0;
+let filed={}, activeCat="ALL", currentList=[], currentIdx=0, pinnedI=null;
 const $=id=>document.getElementById(id);
 
 async function loadState(){ try{const r=await window.storage.get('intercept_filed'); if(r&&r.value)filed=JSON.parse(r.value);}catch(e){filed={};} }
@@ -1219,7 +1308,7 @@ function renderFilters(){
     : `<button class="chip scramble locked" onclick="scramble()">\u27f2 SCRAMBLE \u00b7 LOCKED</button>`;
   $('filters').innerHTML = scrambleChip + cats.map(c=>`<button class="chip ${c===activeCat?'active':''}" onclick="setCat('${c}')">${c==="ALL"?"ALL INTEL":c}</button>`).join('');
 }
-function setCat(c){activeCat=c;renderFilters();renderFeed();$('feed').scrollTo(0,0);}
+function setCat(c){activeCat=c;pinnedI=null;renderFilters();renderFeed();$('feed').scrollTo(0,0);}
 
 /* Scrambler: full (signed-up) users only. Free users always get the fixed
    authoring order, so they can't reboot past the wall to harvest the deck.
@@ -1251,66 +1340,63 @@ function buildList(){
 function renderFeed(){
   const feed=$('feed');
   currentList=buildList();
-  if(activeCat==="DOSSIER"&&!currentList.length){
-    feed.innerHTML=`<div class="empty"><div class="stamp">EMPTY</div><p>NO FILES IN DOSSIER YET.<br>TAP THE FILE ICON ON ANY<br>TRANSMISSION TO CLASSIFY<br>THE INTEL WORTH KEEPING.</p></div>`;return;
+  const free=lead.access!=='full';
+
+  if(activeCat==="DOSSIER" && !currentList.length){
+    feed.innerHTML=`<div class="empty"><div class="stamp">EMPTY</div><p>NO FILES IN DOSSIER YET.<br>TAP THE FILE ICON ON ANY<br>TRANSMISSION TO CLASSIFY<br>THE INTEL WORTH KEEPING.</p></div>`;
+    return;
   }
-  const dCta = activeCat==="DOSSIER" ? `<div class="dossier-note">// FILED ON THIS DEVICE \u00b7 SAVED IN THIS BROWSER</div>` : '';
-  feed.innerHTML=dCta+currentList.map((x,pos)=>{
-    const {item,i}=x; const f=!!filed[i];
-    return `<div class="card" data-pos="${pos}" data-i="${i}">
-      <div class="panel" onclick="openDetail(${pos})">
-        <div class="c-meta"><span class="tag">${item.cat}</span><span class="c-num">TRANSMISSION ${String(i+1).padStart(3,'0')}</span></div>
-        <h2 class="principle">${item.principle[0]}<span class="hl">${item.principle[1]}</span></h2>
-        <p class="c-hook">${esc(item.hook)}</p>
-        <div class="c-foot">
-          <span class="c-src">${esc(item.name)}</span>
-          <div class="right">
-            <span class="decrypt"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="1"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>DECRYPT</span>
-            <div class="savebtn ${f?'filed':''}" onclick="event.stopPropagation();quickFile(${i},this)">
-              <svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M9 12h6M9 16h6"/></svg>
-            </div>
-          </div>
+
+  let html='';
+  if(activeCat==="ALL" && pinnedI!=null){
+    html+=`<div class="card"><div class="shared-banner">// SHARED TRANSMISSION \u00b7 someone intercepted this one for you</div></div>`;
+    html+=cardHTML({item:INTEL[pinnedI],i:pinnedI},true);
+  }
+  if(activeCat==="ALL") html+=`<div class="card">${introBox()}</div>`;
+  if(activeCat==="DOSSIER") html+=`<div class="card" style="padding-bottom:0"><div class="dossier-note">// FILED ON THIS DEVICE \u00b7 SAVED IN THIS BROWSER</div></div>`;
+
+  const cap = free ? Math.min(HARD_THRESHOLD,currentList.length) : currentList.length;
+  for(let p=0;p<cap;p++){
+    if(currentList[p].i===pinnedI) continue;   // already shown pinned on top
+    html+=cardHTML(currentList[p]);
+    if(free && activeCat==="ALL" && p===SOFT_THRESHOLD-1 && currentList.length>SOFT_THRESHOLD){
+      html+=`<div class="card">${softPrompt()}</div>`;
+    }
+  }
+
+  if(free && currentList.length>HARD_THRESHOLD){
+    html+=`<div class="card">${wallPrompt()}</div>`;
+  } else if(!free && activeCat!=="DOSSIER"){
+    html+=`<div class="feed-progress">END OF ${activeCat==="ALL"?"CHANNEL":activeCat} \u00b7 ${currentList.length} TRANSMISSIONS</div>`;
+    if(activeCat==="ALL") html+=`<div class="card caught-up"><div class="cu-stamp">CAUGHT UP</div><p>That's every transmission in the channel. Hit \u27f2 SCRAMBLE up top to reshuffle the deck and resurface the ones worth a second look.</p></div>`;
+  }
+
+  feed.innerHTML=html;
+}
+
+function cardHTML(x,open){
+  const {item,i}=x; const f=!!filed[i];
+  return `<div class="card${open?' open':''}" data-i="${i}">
+    <div class="panel">
+      <div class="c-meta"><span class="tag">${item.cat}</span><span class="c-num">TRANSMISSION ${String(i+1).padStart(3,'0')}</span></div>
+      <h2 class="principle">${item.principle[0]}<span class="hl">${item.principle[1]}</span></h2>
+      <p class="c-hook">${esc(item.hook)}</p>
+      <div class="c-foot">
+        <span class="c-src">${esc(item.name)}</span>
+        <div class="right">
+          <button class="decode-btn" onclick="toggleCard(this)"><span class="dlabel">${open?'COLLAPSE':'DECODE'}</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+          <button class="iconbtn" onclick="shareCard(${i})" aria-label="Share this transmission"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></button>
+          <div class="savebtn ${f?'filed':''}" onclick="quickFile(${i},this)"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M9 12h6M9 16h6"/></svg></div>
         </div>
       </div>
-      ${pos===0&&activeCat!=="DOSSIER"?'<div class="swipe-hint">\u2191 SWIPE FOR NEXT \u2191</div>':''}
-    </div>`;
-  }).join('');
-  observeCards();
+      <div class="card-full"><div class="card-full-inner"><div class="card-full-pad">${cardFullHTML(item)}</div></div></div>
+    </div>
+  </div>`;
 }
 
-let io;
-function observeCards(){
-  if(io)io.disconnect();
-  io=new IntersectionObserver(es=>es.forEach(e=>{
-    if(e.isIntersecting){
-      e.target.classList.add('seen');
-      const a=e.target.getAttribute('data-i');
-      if(a!==null){ const i=+a; if(!seenSet.has(i)){ seenSet.add(i); saveSeen(); checkGates(); } }
-    }
-  }),{threshold:.2});
-  document.querySelectorAll('.card').forEach(c=>io.observe(c));
-}
-
-async function quickFile(i,el){
-  filed[i]=!filed[i];await saveFiled();
-  el.classList.toggle('filed',filed[i]);
-  toast(filed[i]?'FILED TO DOSSIER':'REMOVED FROM DOSSIER');
-  if(activeCat==="DOSSIER"&&!filed[i])renderFeed();
-}
-
-function openDetail(pos){ currentIdx=pos; markStudied(currentList[pos].i); paintDetail(); $('detail').classList.add('open'); $('dBody').scrollTo(0,0); }
-function paintDetail(){
-  const {item,i}=currentList[currentIdx];
-  const f=!!filed[i];
-  $('dPos').textContent=`FILE ${String(i+1).padStart(3,'0')} \u00b7 ${currentIdx+1}/${currentList.length}`;
-  $('dSave').classList.toggle('filed',f);
-  $('dSave').onclick=()=>toggleDetailSave(i);
-  const quoteBlock = item.quote ? `
-    <div class="d-label">FROM THE SOURCE</div>
-    <div class="vquote"><div class="vtext">\u201c${esc(item.quote)}\u201d</div><div class="vtag">\u2713 ${esc(item.qsrc)}</div></div>` : '';
-  $('dBody').innerHTML=`
-    <div class="d-chips"><span class="d-chip">${item.cat}</span><span class="d-chip mech">\u27c1 ${item.mech}</span></div>
-    <h1 class="d-principle">${item.principle[0]}<span class="hl">${item.principle[1]}</span></h1>
+function cardFullHTML(item){
+  const quoteBlock = item.quote ? `<div class="d-label">FROM THE SOURCE</div><div class="vquote"><div class="vtext">\u201c${esc(item.quote)}\u201d</div><div class="vtag">\u2713 ${esc(item.qsrc)}</div></div>` : '';
+  return `<div class="ex-mech">\u27c1 ${esc(item.mech)}</div>
     <div class="d-label">THE BRIEF</div>
     <p class="d-brief">${item.brief}</p>
     ${quoteBlock}
@@ -1320,47 +1406,62 @@ function paintDetail(){
       <div class="spec-row after"><div class="spec-head aft"><span class="mk">\u2713 AFTER</span></div><div class="spec-text">${esc(item.after)}</div></div>
     </div>
     <div class="move"><div class="mlabel">// YOUR MOVE</div><div class="mtext">${esc(item.move)}</div></div>
-    <div class="d-source">
-      <span class="slabel">// INTERCEPTED FROM</span>
-      <span class="sname">${esc(item.name)}</span>
-      <span>${esc(item.src)} \u2014 ${esc(item.org)}</span>
-    </div>
-    <div class="d-next">
-      <button class="navbtn" ${currentIdx===0?'disabled':''} onclick="navDetail(-1)">\u2190 PREV</button>
-      <button class="navbtn prime" ${currentIdx===currentList.length-1?'disabled':''} onclick="navDetail(1)">NEXT TRANSMISSION \u2192</button>
-    </div>`;
+    <div class="d-source"><span class="slabel">// INTERCEPTED FROM</span><span class="sname">${esc(item.name)}</span><span>${esc(item.src)} \u2014 ${esc(item.org)}</span></div>`;
 }
-function navDetail(d){
-  const n=currentIdx+d;
-  if(n<0||n>=currentList.length)return;
-  // Forward nav counts toward the gate for free users, same as scrolling the feed.
-  // Closes the "open one card and tap NEXT through the whole deck" bypass.
-  if(d>0 && lead.access!=='full'){
-    const targetI=currentList[n].i;
-    const newCard=!seenSet.has(targetI);
-    if(newCard && seenSet.size>=HARD_THRESHOLD){ openLead('wall','hard'); return; }  // block crossing the wall
-    if(newCard){ seenSet.add(targetI); saveSeen(); }
-    currentIdx=n; markStudied(currentList[currentIdx].i); paintDetail(); $('dBody').scrollTo(0,0);
-    if(!lead.softShown && seenSet.size>=SOFT_THRESHOLD){ openLead('milestone','soft'); lead.softShown=true; saveLead(); }
-    return;
-  }
-  currentIdx=n; paintDetail(); $('dBody').scrollTo(0,0);
-}
-async function toggleDetailSave(i){
-  filed[i]=!filed[i];await saveFiled();
-  $('dSave').classList.toggle('filed',filed[i]);
-  toast(filed[i]?'FILED TO DOSSIER':'REMOVED FROM DOSSIER');
-}
-function closeDetail(){
-  $('detail').classList.remove('open'); renderFeed();
-  if(lead.access!=='full'){
-    if(wallPending){ wallPending=false; openLead('wall','hard'); }
-    else if(leadPending && !lead.softShown){ leadPending=false; openLead('milestone','soft'); lead.softShown=true; saveLead(); }
-  }
-}
-$('dBack').onclick=closeDetail;
 
-/* ---------------- funnel / lead capture (SIMULATED) ----------------
+function toggleCard(btn){
+  const card=btn.closest('.card');
+  const open=card.classList.toggle('open');
+  const lbl=card.querySelector('.dlabel'); if(lbl)lbl.textContent = open ? 'COLLAPSE' : 'DECODE';
+  if(open){ const i=+card.getAttribute('data-i'); if(!isNaN(i)) markStudied(i); }
+}
+
+function introBox(){
+  return `<div class="brief-card">
+    <div class="brief-head"><span>// NEW OPERATIVE BRIEFING</span><span>CLASSIFIED</span></div>
+    <div class="brief-body">
+      <h3>WELCOME TO <span class="hl">THE INTERCEPT.</span></h3>
+      <p class="brief-lead">${INTEL.length} cards of field-tested copywriting intel \u2014 decoded from the operators who actually moved money with words, rewritten for working freelance writers. Don't doomscroll. <em>Weaponize</em> the scroll.</p>
+      <div class="howto">
+        <div class="howto-title">// HOW IT WORKS</div>
+        <div class="howto-row"><div class="howto-ic"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div><div class="howto-tx"><strong>DECODE</strong> any card to crack it open \u2014 the full teardown, the rewrite, and your move.</div></div>
+        <div class="howto-row"><div class="howto-ic"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M9 12h6M9 16h6"/></svg></div><div class="howto-tx"><strong>FILE</strong> the keepers to your dossier \u2014 saved right here on your device.</div></div>
+        <div class="howto-row"><div class="howto-ic"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></div><div class="howto-tx"><strong>SHARE</strong> a transmission with anyone who needs to see it.</div></div>
+      </div>
+      <div class="brief-install"><strong>Run it like a real app.</strong> On iPhone: tap your browser's <strong>Share \u2192 Add to Home Screen</strong>. On Android: tap <strong>Install</strong> when prompted (or menu \u2192 Install app). It opens full-screen \u2014 no address bar, just the feed.</div>
+      <div class="brief-foot">Berry Good Copy \u00b7 Agency-Insider Intel</div>
+    </div>
+  </div>`;
+}
+
+function softPrompt(){
+  return `<div class="feed-prompt soft">
+    <div class="fp-eye">// INCOMING TRANSMISSION</div>
+    <h3>YOU'RE <span class="hl">CHEWING THROUGH THESE.</span></h3>
+    <p>Hey, Mikey here. My free email course goes way deeper on actually applying this stuff to land writing work that pays. <em>(Keep scrolling \u2014 just planting the seed.)</em></p>
+    <button class="fp-btn ghost" onclick="openLead('milestone','soft')">TELL ME MORE \u2192</button>
+  </div>`;
+}
+
+function wallPrompt(){
+  return `<div class="feed-prompt">
+    <div class="wall-lock"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="1"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+    <div class="fp-eye" style="text-align:center">// URGENT TRANSMISSION</div>
+    <h3 style="text-align:center">THEY'RE <span class="hl">ONTO YOU.</span></h3>
+    <p style="text-align:center">You've intercepted enough to know this works. The rest of the library opens with your email \u2014 plus my free course on turning this into writing jobs that <span class="hl">actually pay.</span></p>
+    <button class="fp-btn" onclick="openLead('wall','hard')">UNLOCK FULL ACCESS \u2192</button>
+    <button class="fp-btn ghost" style="margin-top:10px" onclick="openLead('wall','hard')">ALREADY ON THE LIST? RESTORE \u2192</button>
+  </div>`;
+}
+
+async function quickFile(i,el){
+  filed[i]=!filed[i];await saveFiled();
+  el.classList.toggle('filed',filed[i]);
+  toast(filed[i]?'FILED TO DOSSIER':'REMOVED FROM DOSSIER');
+  if(activeCat==="DOSSIER"&&!filed[i])renderFeed();
+}
+
+/* ---------------- funnel / lead capture ----------------
    Two gates: soft prompt after SOFT cards scrolled (dismissible),
    hard wall after HARD cards scrolled (locks the feed until unlock).
    Submit subscribes via the Netlify Function -> your Kit form (which fires
@@ -1386,16 +1487,6 @@ async function saveSeen(){ try{await window.storage.set(SEEN_KEY,JSON.stringify(
 
 function markStudied(i){ if(studiedSet.has(i))return; studiedSet.add(i); saveStudied(); }
 
-function checkGates(){
-  if(lead.access==='full')return;
-  const detailOpen=$('detail').classList.contains('open');
-  if(seenSet.size>=HARD_THRESHOLD){ if(detailOpen)wallPending=true; else openLead('wall','hard'); return; }
-  if(!lead.softShown && seenSet.size>=SOFT_THRESHOLD){
-    if(detailOpen)leadPending=true;
-    else { openLead('milestone','soft'); lead.softShown=true; saveLead(); }
-  }
-}
-
 function leadCopy(source){
   const n=seenSet.size;
   if(source==='wall'){
@@ -1413,26 +1504,32 @@ function leadCopy(source){
       head:`GET THE <span class="hl">CLASSIFIED</span> FEED.`,
       body:`Get the email course routed straight to your inbox.<br><br>Weaponize the wisdom from these cards to start landing writing jobs that <span class="hl">actually pay.</span><br><br><em>(Signing up also unlocks all the cards \u2014 it tells me you're serious about learning, not just a get-rich-quick schemer.)</em>`};
   }
+  if(source==='restore'){
+    return {eye:'// RESTORE ACCESS',
+      head:`WELCOME BACK, <span class="hl">OPERATIVE.</span>`,
+      body:`Already enlisted? Enter the email you signed up with and I'll restore your full clearance on this device.<br><br><em>(New here? The same field works \u2014 it'll just start your enrollment.)</em>`};
+  }
   const today=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
   return {eye:'// INCOMING TRANSMISSION',
-    head:`YOU'VE INTERCEPTED <span class="hl">${n} TRANSMISSIONS.</span>`,
+    head:`YOU'VE INTERCEPTED <span class="hl">A FEW TRANSMISSIONS.</span>`,
     body:`Hey, Mikey here.<br><br>Wow, you're <em>chewing</em> through these, huh?<br><br>My free email course can teach you way more about how to apply these strategies <span class="hl">TODAY, ${today},</span> to actually monetize your writing.<br><br>Whaddya say?`};
 }
 function openLead(source,mode){
   const hard=mode==='hard';
   const ov=$('leadOverlay');
   ov.classList.toggle('hard',hard);
-  const c=leadCopy(source||'milestone');
+  const src=source||'milestone';
+  const c=leadCopy(src);
+  const label=src==='restore'?'RESTORE ACCESS \u2192':(hard?'UNLOCK FULL ACCESS \u2192':'SEND ME THE FILES \u2192');
   $('leadEyebrow').textContent=c.eye;
   $('leadHead').innerHTML=c.head;
   $('leadBody').innerHTML=c.body;
-  $('leadSubmit').textContent=hard?'UNLOCK FULL ACCESS \u2192':'SEND ME THE FILES \u2192';
   $('leadForm').style.display='';
   $('leadDone').style.display='none';
   $('leadConfirm').style.display='none';
   $('leadErr').textContent='';
   $('leadEmail').value='';
-  const sb=$('leadSubmit'); sb.disabled=false; sb.textContent=hard?'UNLOCK FULL ACCESS \u2192':'SEND ME THE FILES \u2192';
+  const sb=$('leadSubmit'); sb.disabled=false; sb.textContent=label;
   ov.classList.add('open');
 }
 function closeLead(){ const ov=$('leadOverlay'); ov.classList.remove('open'); ov.classList.remove('hard'); }
@@ -1442,7 +1539,7 @@ function grantAccess(token,returning){
   lead.captured=true; lead.access='full'; lead.token=token||null; saveLead();
   $('leadDoneHead').innerHTML = returning ? 'SUBSCRIBER <span class="hl">VERIFIED.</span>' : 'CLEARANCE <span class="hl">GRANTED.</span>';
   $('leadDoneBody').textContent = returning
-    ? 'Welcome back. Full access restored across the channel.'
+    ? 'Welcome back \u2014 full access restored across the channel. (If a confirmation email turns up, you can ignore it; you were already on the list.)'
     : 'Confirmed. The full library is open \u2014 and the scrambler is live.';
   $('leadForm').style.display='none'; $('leadConfirm').style.display='none'; $('leadDone').style.display='';
   $('leadDone').classList.add('green');
@@ -1484,8 +1581,19 @@ $('leadSubmit').onclick=submitLead;
 $('leadConfirmBtn').onclick=confirmCheck;
 $('leadContinue').onclick=()=>{ closeLead(); if(lead.access==='full'&&!shuffleOrder)makeShuffle(); renderFilters(); renderFeed(); };
 $('leadEmail').addEventListener('keydown',e=>{ if(e.key==='Enter')submitLead(); });
-$('inboxBtn').onclick=()=>{ if(lead.access==='full')toast("You're in. Full access active."); else openLead('inbox','soft'); };
-$('leadOverlay').addEventListener('click',e=>{ if(e.target.id==='leadOverlay' && !$('leadOverlay').classList.contains('hard'))closeLead(); });
+function openSettings(){
+  const full=lead.access==='full';
+  $('setAccess').innerHTML = full
+    ? `<div class="set-status">\u2713 FULL ACCESS ACTIVE ON THIS DEVICE</div>`
+    : `<div class="set-sub">Already enlisted on another device, or cleared your browser? Restore your clearance with the email you signed up with.</div><button class="set-btn" onclick="restoreFromSettings()">RESTORE ACCESS \u2192</button>`;
+  $('settingsOverlay').classList.add('open');
+}
+function closeSettings(){ $('settingsOverlay').classList.remove('open'); }
+function restoreFromSettings(){ closeSettings(); openLead('restore','soft'); }
+$('gearBtn').onclick=openSettings;
+$('setClose').onclick=closeSettings;
+$('settingsOverlay').addEventListener('click',e=>{ if(e.target.id==='settingsOverlay')closeSettings(); });
+$('leadOverlay').addEventListener('click',e=>{ if(e.target.id==='leadOverlay')closeLead(); });
 $('devReset').onclick=async()=>{
   seenSet=new Set(); studiedSet=new Set(); lead={captured:false,softShown:false,access:'free'};
   leadPending=false; wallPending=false; shuffleOrder=null;
@@ -1493,15 +1601,50 @@ $('devReset').onclick=async()=>{
   closeLead(); setCat('ALL'); $('feed').scrollTo(0,0); toast('FUNNEL STATE RESET');
 };
 
+async function shareCard(i){
+  const item=INTEL[i];
+  const url=location.origin+location.pathname+'#t'+(i+1);
+  const title='The Intercept \u2014 Transmission '+String(i+1).padStart(3,'0');
+  const text=(item.principle[0]+item.principle[1]).trim()+' \u2014 intercepted via The Intercept';
+  if(navigator.share){
+    try{ await navigator.share({title,text,url}); }catch(e){ /* user dismissed */ }
+    return;
+  }
+  try{ await navigator.clipboard.writeText(url); toast('LINK COPIED'); }
+  catch(e){ toast('COPY THIS LINK: '+url); }
+}
+
+function handleDeepLink(){
+  const m=(location.hash||'').match(/^#t(\d+)$/);
+  if(!m) return;
+  const idx=parseInt(m[1],10)-1;
+  if(idx<0||idx>=INTEL.length) return;
+  let el=document.querySelector('.card[data-i="'+idx+'"]');
+  if(!el && lead.access!=='full'){
+    // gated card -> pin it on top so the shared link still lands on a real read
+    pinnedI=idx; activeCat='ALL'; renderFilters(); renderFeed();
+    el=document.querySelector('.card[data-i="'+idx+'"]');
+  }
+  if(el){
+    el.classList.add('open');
+    const lbl=el.querySelector('.dlabel'); if(lbl)lbl.textContent='COLLAPSE';
+    markStudied(idx);
+    setTimeout(()=>{ const er=el.getBoundingClientRect(); $('feed').scrollBy({top:er.top-124,behavior:'smooth'}); },70);
+  }
+}
+window.addEventListener('hashchange',handleDeepLink);
+
 (async function init(){
+  if(!DEV_MODE){ const dr=$('devReset'); if(dr)dr.remove(); }
   await loadState(); await loadLead();
   if(lead.access==='full') makeShuffle();
   renderFilters(); renderFeed();
-  if(lead.access!=='full'){
-    if(seenSet.size>=HARD_THRESHOLD) openLead('wall','hard');
-    else if(seenSet.size>=SOFT_THRESHOLD && !lead.softShown){ openLead('milestone','soft'); lead.softShown=true; saveLead(); }
-  }
+  handleDeepLink();
 })();
+
+if('serviceWorker' in navigator && location.protocol==='https:'){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+}
 </script>
 </body>
 </html>
