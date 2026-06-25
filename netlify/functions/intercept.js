@@ -32,6 +32,7 @@ const CORS = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
 const reply = (status, obj) => ({ statusCode: status, headers: CORS, body: JSON.stringify(obj) });
+const log = (...a) => { try { console.log('[intercept]', ...a); } catch (_) {} };
 
 function kit(path, opts = {}) {
   return fetch(KIT_BASE + path, {
@@ -90,22 +91,41 @@ exports.handler = async (event) => {
   try {
     if (body.action === 'subscribe') {
       // Look the subscriber up FIRST. If they're already confirmed, unlock
-      // immediately and do NOT re-add them through the form — that's what was
-      // firing a needless confirmation email to people already on the list.
+      // immediately and do NOT re-add them through the form.
       const existing = await lookup(email);
+      log('subscribe', email, '| existing state =', existing ? existing.state : 'none');
       if (existing && existing.state === 'active') {
         await tagSubscriber(email);
+        log('-> already active; instant unlock, no email');
         return reply(200, { subscribed: true, confirmed: true, token: signToken(email) });
       }
-      // New or not-yet-confirmed -> route through the existing form so YOUR
-      // incentive (confirmation) email + welcome sequence fire exactly as they
-      // do for a normal sign-up.
-      await kit('/forms/' + FORM_ID + '/subscribers', { method: 'POST', body: JSON.stringify({ email_address: email }) });
+      // New / unconfirmed -> add through the form (this is what fires Kit's
+      // confirmation/incentive email for a double opt-in form).
+      const r = await kit('/forms/' + FORM_ID + '/subscribers', { method: 'POST', body: JSON.stringify({ email_address: email }) });
+      const txt = await r.text();
+      log('form POST -> status', r.status, '| body', txt.slice(0, 600));
+      if (!r.ok) {
+        // Don't pretend it worked. Surface it so the app shows an error instead
+        // of telling the user to check an inbox that will never get an email.
+        return reply(502, { error: 'Kit rejected the sign-up', status: r.status, detail: txt.slice(0, 300) });
+      }
+      let data = {};
+      try { data = JSON.parse(txt); } catch (_) {}
+      const state = data.subscriber && data.subscriber.state;
+      log('form POST -> subscriber state =', state);
+      if (state === 'active') {
+        // Form auto-confirmed (double opt-in is OFF) -> no email will be sent.
+        await tagSubscriber(email);
+        log('-> form returned ACTIVE (double opt-in likely OFF); unlocking, no confirmation email sent');
+        return reply(200, { subscribed: true, confirmed: true, token: signToken(email) });
+      }
+      log('-> pending confirmation; Kit should be sending the confirmation email now');
       return reply(200, { subscribed: true, confirmed: false });
     }
 
     if (body.action === 'check') {
       const sub = await lookup(email);
+      log('check', email, '| state =', sub ? sub.state : 'none');
       if (sub && sub.state === 'active') {
         await tagSubscriber(email);
         return reply(200, { confirmed: true, token: signToken(email) });
@@ -115,6 +135,7 @@ exports.handler = async (event) => {
 
     return reply(400, { error: 'Unknown action' });
   } catch (e) {
+    log('ERROR', String((e && e.message) || e));
     return reply(502, { error: 'Upstream error', detail: String((e && e.message) || e) });
   }
 };
