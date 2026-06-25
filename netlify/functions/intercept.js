@@ -89,15 +89,18 @@ exports.handler = async (event) => {
 
   try {
     if (body.action === 'subscribe') {
-      // Route through the existing form so YOUR incentive (confirmation) email
-      // and welcome sequence fire exactly as they do for normal sign-ups.
-      await kit('/forms/' + FORM_ID + '/subscribers', { method: 'POST', body: JSON.stringify({ email_address: email }) });
-      // Returning subscriber already confirmed? Unlock immediately.
-      const sub = await lookup(email);
-      if (sub && sub.state === 'active') {
+      // Look the subscriber up FIRST. If they're already confirmed, unlock
+      // immediately and do NOT re-add them through the form — that's what was
+      // firing a needless confirmation email to people already on the list.
+      const existing = await lookup(email);
+      if (existing && existing.state === 'active') {
         await tagSubscriber(email);
         return reply(200, { subscribed: true, confirmed: true, token: signToken(email) });
       }
+      // New or not-yet-confirmed -> route through the existing form so YOUR
+      // incentive (confirmation) email + welcome sequence fire exactly as they
+      // do for a normal sign-up.
+      await kit('/forms/' + FORM_ID + '/subscribers', { method: 'POST', body: JSON.stringify({ email_address: email }) });
       return reply(200, { subscribed: true, confirmed: false });
     }
 
