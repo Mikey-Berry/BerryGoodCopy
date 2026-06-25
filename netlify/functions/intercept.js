@@ -99,39 +99,34 @@ exports.handler = async (event) => {
         log('-> already active; instant unlock, no email');
         return reply(200, { subscribed: true, confirmed: true, token: signToken(email) });
       }
-      // New / unconfirmed -> add through the form (this is what fires Kit's
-      // confirmation/incentive email for a double opt-in form).
-      log('using KIT_FORM_ID =', JSON.stringify(FORM_ID));
+      // Kit v4 requires the subscriber to EXIST before it can be added to a form
+      // — that was the 404. Create them as 'inactive' first, which preserves
+      // double opt-in (they go active only after clicking the confirmation email).
+      const cr = await kit('/subscribers', { method: 'POST', body: JSON.stringify({ email_address: email, state: 'inactive' }) });
+      const crtxt = await cr.text();
+      log('create subscriber -> status', cr.status, '| body', crtxt.slice(0, 300));
+      if (!cr.ok) {
+        return reply(502, { error: 'Kit could not create the subscriber', status: cr.status, detail: crtxt.slice(0, 300) });
+      }
+
+      // Now add them to the form -> THIS is what fires your confirmation email.
       const r = await kit('/forms/' + FORM_ID + '/subscribers', { method: 'POST', body: JSON.stringify({ email_address: email }) });
       const txt = await r.text();
-      log('form POST -> status', r.status, '| body', txt.slice(0, 600));
+      log('form POST -> status', r.status, '| body', txt.slice(0, 400));
       if (!r.ok) {
-        // 404 here almost always means KIT_FORM_ID doesn't match a form in THIS
-        // account. List the real forms so the correct id <-> name is visible.
-        let forms = '(could not list)';
-        try {
-          const fr = await kit('/forms');
-          if (fr.ok) {
-            const fd = await fr.json().catch(() => ({}));
-            forms = (fd.forms || []).map(f => f.id + ' = "' + f.name + '"').join('   |   ') || '(account has no forms)';
-          } else {
-            forms = 'forms-list call returned status ' + fr.status + ' (if 401, the API key is the problem)';
-          }
-        } catch (e) { forms = 'forms-list error ' + String((e && e.message) || e); }
-        log('>>> AVAILABLE FORMS in this account:', forms);
-        return reply(502, { error: 'Kit rejected the sign-up', status: r.status, detail: txt.slice(0, 300) });
+        return reply(502, { error: 'Kit rejected the form add', status: r.status, detail: txt.slice(0, 300) });
       }
       let data = {};
       try { data = JSON.parse(txt); } catch (_) {}
       const state = data.subscriber && data.subscriber.state;
       log('form POST -> subscriber state =', state);
       if (state === 'active') {
-        // Form auto-confirmed (double opt-in is OFF) -> no email will be sent.
+        // Double opt-in is off on this form -> no confirmation email; just unlock.
         await tagSubscriber(email);
-        log('-> form returned ACTIVE (double opt-in likely OFF); unlocking, no confirmation email sent');
+        log('-> active already; unlocking, no confirmation email needed');
         return reply(200, { subscribed: true, confirmed: true, token: signToken(email) });
       }
-      log('-> pending confirmation; Kit should be sending the confirmation email now');
+      log('-> pending confirmation; Kit is sending the confirmation email now');
       return reply(200, { subscribed: true, confirmed: false });
     }
 
