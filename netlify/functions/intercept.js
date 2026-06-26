@@ -87,6 +87,7 @@ exports.handler = async (event) => {
 
   const email = (body.email || '').trim().toLowerCase();
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return reply(400, { error: 'Invalid email' });
+  const name = (body.name || '').trim();
 
   try {
     if (body.action === 'subscribe') {
@@ -102,7 +103,9 @@ exports.handler = async (event) => {
       // Kit v4 requires the subscriber to EXIST before it can be added to a form
       // — that was the 404. Create them as 'inactive' first, which preserves
       // double opt-in (they go active only after clicking the confirmation email).
-      const cr = await kit('/subscribers', { method: 'POST', body: JSON.stringify({ email_address: email, state: 'inactive' }) });
+      const subBody = { email_address: email, state: 'inactive' };
+      if (name) subBody.first_name = name;
+      const cr = await kit('/subscribers', { method: 'POST', body: JSON.stringify(subBody) });
       const crtxt = await cr.text();
       log('create subscriber -> status', cr.status, '| body', crtxt.slice(0, 300));
       if (!cr.ok) {
