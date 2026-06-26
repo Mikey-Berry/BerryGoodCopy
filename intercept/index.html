@@ -88,6 +88,8 @@ body::after{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
 /* intro / "what is this" card */
 .brief-card{border:2px solid var(--red);background:linear-gradient(165deg,#1b1212,#0e0e0e);box-shadow:0 18px 44px rgba(0,0,0,.5);}
 .brief-head{background:var(--red);color:var(--black);font-family:'Space Mono',monospace;font-size:10.5px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;padding:9px 15px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.brief-x{background:none;border:none;color:var(--black);font-size:15px;line-height:1;cursor:pointer;padding:0 0 0 10px;font-family:'Space Mono',monospace;flex:0 0 auto;}
+.brief-x:active{opacity:.55;}
 .brief-body{padding:22px 20px 20px;}
 .brief-body h3{font-family:'Bebas Neue',sans-serif;font-size:34px;line-height:1.0;letter-spacing:.5px;margin-bottom:12px;}
 .brief-body h3 .hl{color:var(--red);}
@@ -272,6 +274,13 @@ body::after{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
     </div>
 
     <div class="set-sec">
+      <div class="set-label">HOW IT WORKS</div>
+      <div class="howto" style="border-top:none;padding-top:0;">
+        <div id="setHowto"></div>
+      </div>
+    </div>
+
+    <div class="set-sec">
       <div class="set-label">PRIVACY</div>
       <div class="set-copy">
         <strong>Your dossier stays on your device.</strong> The cards you file are saved in this browser only — not on any server. Clear your browser data and they're gone.<br><br>
@@ -299,6 +308,7 @@ body::after{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
       <h2 id="leadHead"></h2>
       <p class="body" id="leadBody"></p>
       <div class="field">
+        <input id="leadName" type="text" autocomplete="given-name" autocapitalize="words" placeholder="Name"/>
         <input id="leadEmail" type="email" inputmode="email" autocomplete="email" placeholder="your@email.com"/>
         <button class="submit" id="leadSubmit">SEND ME THE FILES &#8594;</button>
       </div>
@@ -1352,7 +1362,7 @@ function renderFeed(){
     html+=`<div class="card"><div class="shared-banner">// SHARED TRANSMISSION \u00b7 someone intercepted this one for you</div></div>`;
     html+=cardHTML({item:INTEL[pinnedI],i:pinnedI},true);
   }
-  if(activeCat==="ALL") html+=`<div class="card">${introBox()}</div>`;
+  if(activeCat==="ALL" && !lead.briefHidden) html+=`<div class="card">${introBox()}</div>`;
   if(activeCat==="DOSSIER") html+=`<div class="card" style="padding-bottom:0"><div class="dossier-note">// FILED ON THIS DEVICE \u00b7 SAVED IN THIS BROWSER</div></div>`;
 
   const cap = free ? Math.min(HARD_THRESHOLD,currentList.length) : currentList.length;
@@ -1416,23 +1426,29 @@ function toggleCard(btn){
   if(open){ const i=+card.getAttribute('data-i'); if(!isNaN(i)) markStudied(i); }
 }
 
+function tutorialBodyHTML(){
+  return `<div class="howto-row"><div class="howto-ic"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div><div class="howto-tx"><strong>DECODE</strong> any card to crack it open \u2014 the full teardown, the rewrite, and your move.</div></div>
+    <div class="howto-row"><div class="howto-ic"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M9 12h6M9 16h6"/></svg></div><div class="howto-tx"><strong>FILE</strong> the keepers to your dossier \u2014 saved right here on your device.</div></div>
+    <div class="howto-row"><div class="howto-ic"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></div><div class="howto-tx"><strong>SHARE</strong> a transmission with anyone who needs to see it.</div></div>
+    <div class="brief-install"><strong>Run it like a real app.</strong> On iPhone: tap your browser's <strong>Share \u2192 Add to Home Screen</strong>. On Android: tap <strong>Install</strong> when prompted (or menu \u2192 Install app). It opens full-screen \u2014 no address bar, just the feed.</div>`;
+}
+
 function introBox(){
   return `<div class="brief-card">
-    <div class="brief-head"><span>// NEW OPERATIVE BRIEFING</span><span>CLASSIFIED</span></div>
+    <div class="brief-head"><span>// NEW OPERATIVE BRIEFING</span><button class="brief-x" onclick="dismissBrief()" aria-label="Dismiss briefing">&#10005;</button></div>
     <div class="brief-body">
       <h3>WELCOME TO <span class="hl">THE INTERCEPT.</span></h3>
       <p class="brief-lead">${INTEL.length} cards of field-tested copywriting intel \u2014 decoded from the operators who actually moved money with words, rewritten for working freelance writers. Don't doomscroll. <em>Weaponize</em> the scroll.</p>
       <div class="howto">
         <div class="howto-title">// HOW IT WORKS</div>
-        <div class="howto-row"><div class="howto-ic"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div><div class="howto-tx"><strong>DECODE</strong> any card to crack it open \u2014 the full teardown, the rewrite, and your move.</div></div>
-        <div class="howto-row"><div class="howto-ic"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M9 12h6M9 16h6"/></svg></div><div class="howto-tx"><strong>FILE</strong> the keepers to your dossier \u2014 saved right here on your device.</div></div>
-        <div class="howto-row"><div class="howto-ic"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></div><div class="howto-tx"><strong>SHARE</strong> a transmission with anyone who needs to see it.</div></div>
+        ${tutorialBodyHTML()}
       </div>
-      <div class="brief-install"><strong>Run it like a real app.</strong> On iPhone: tap your browser's <strong>Share \u2192 Add to Home Screen</strong>. On Android: tap <strong>Install</strong> when prompted (or menu \u2192 Install app). It opens full-screen \u2014 no address bar, just the feed.</div>
       <div class="brief-foot">Berry Good Copy \u00b7 Agency-Insider Intel</div>
     </div>
   </div>`;
 }
+
+function dismissBrief(){ lead.briefHidden=true; saveLead(); renderFeed(); toast('BRIEFING FILED \u00b7 REVISIT IT IN SETTINGS'); }
 
 function softPrompt(){
   return `<div class="feed-prompt soft">
@@ -1529,6 +1545,7 @@ function openLead(source,mode){
   $('leadConfirm').style.display='none';
   $('leadErr').textContent='';
   $('leadEmail').value='';
+  $('leadName').value=''; $('leadName').style.display = (src==='restore') ? 'none' : '';
   const sb=$('leadSubmit'); sb.disabled=false; sb.textContent=label;
   ov.classList.add('open');
 }
@@ -1549,11 +1566,14 @@ function showConfirmScreen(email,dev){
   $('leadForm').style.display='none'; $('leadDone').style.display='none'; $('leadConfirm').style.display='';
 }
 async function submitLead(){
+  const needName=$('leadName').style.display!=='none';
+  const name=$('leadName').value.trim();
   const email=$('leadEmail').value.trim().toLowerCase();
+  if(needName && !name){ $('leadErr').textContent='Enter your name to open the channel.'; return; }
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ $('leadErr').textContent='Enter a valid email to open the channel.'; return; }
   $('leadErr').textContent=''; const label=$('leadSubmit').textContent; setSubmitting(true); lead.email=email; saveLead();
   try{
-    const r=await fetch(API_BASE,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'subscribe',email})});
+    const r=await fetch(API_BASE,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'subscribe',email,name})});
     if(!r.ok) throw new Error('backend '+r.status);
     const data=await r.json();
     if(data.confirmed) grantAccess(data.token,true);   // already a confirmed subscriber -> instant unlock
@@ -1583,6 +1603,7 @@ $('leadContinue').onclick=()=>{ closeLead(); if(lead.access==='full'&&!shuffleOr
 $('leadEmail').addEventListener('keydown',e=>{ if(e.key==='Enter')submitLead(); });
 function openSettings(){
   const full=lead.access==='full';
+  $('setHowto').innerHTML=tutorialBodyHTML();
   $('setAccess').innerHTML = full
     ? `<div class="set-status">\u2713 FULL ACCESS ACTIVE ON THIS DEVICE</div>`
     : `<div class="set-sub">Already enlisted on another device, or cleared your browser? Restore your clearance with the email you signed up with.</div><button class="set-btn" onclick="restoreFromSettings()">RESTORE ACCESS \u2192</button>`;
